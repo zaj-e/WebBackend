@@ -12,5 +12,6 @@ namespace Supermarket.API.Domain.Models
         public short QuantityInPackage { get; set; }
         public EUnitOfMeasurement UnitOfMeasurement { get; set; }
         public Category Category { get; set; }
+        public int CategoryId { get; set; }
     }
 }
