@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Supermarket.API.Domain.Models;
+using Supermarket.API.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Supermarket.API.Domain.Persistence.Contexts
             base.OnModelCreating(builder);
             
             // Category Entity
-            builder.Entity<Category>().ToTable("categories");
+            builder.Entity<Category>().ToTable("Categories"); //snake_case
             builder.Entity<Category>().HasKey(p => p.Id);
             builder.Entity<Category>().Property(p => p.Id)
                 .IsRequired().ValueGeneratedOnAdd();
@@ -39,7 +40,7 @@ namespace Supermarket.API.Domain.Persistence.Contexts
                 );
 
             // Products Entity
-            builder.Entity<Product>().ToTable("products");
+            builder.Entity<Product>().ToTable("Products");
             builder.Entity<Product>().HasKey(p => p.Id);
             builder.Entity<Product>().Property(p => p.Id)
                 .IsRequired().ValueGeneratedOnAdd();
@@ -50,6 +51,8 @@ namespace Supermarket.API.Domain.Persistence.Contexts
             builder.Entity<Product>().Property(p => p.UnitOfMeasurement)
                 .IsRequired();
 
+            // Naming Convention Policy
+            builder.ApplySnakeCaseNamingConvention();
         }
     }
 }
