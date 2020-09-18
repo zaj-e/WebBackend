@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Supermarket.API.Extensions
 {
-    public static class ModelStateExtensions //ModelStateDictionaryExtensions
+    public static class ModelStateExtensions
     {
         public static List<string> GetErrorMessages(this ModelStateDictionary dictionary)
         {

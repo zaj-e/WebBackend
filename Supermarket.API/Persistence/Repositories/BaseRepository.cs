@@ -1,8 +1,5 @@
-﻿using Supermarket.API.Domain.Persistence.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using Supermarket.API.Domain.Persistence.Contexts;
 
 namespace Supermarket.API.Persistence.Repositories
 {

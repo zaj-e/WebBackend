@@ -1,14 +1,11 @@
-﻿using Supermarket.API.Domain.Models;
-using Supermarket.API.Resources;
+﻿using System;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Supermarket.API.Domain.Models;
+using Supermarket.API.Resources;
 
 namespace Supermarket.API.Mapping
 {
-    public class ResourceToModelProfile: Profile
+    public class ResourceToModelProfile : Profile
     {
         public ResourceToModelProfile()
         {

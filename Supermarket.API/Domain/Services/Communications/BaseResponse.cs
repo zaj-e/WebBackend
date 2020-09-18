@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Supermarket.API.Domain.Services.Communications
 {
     public abstract class BaseResponse<T>
@@ -10,6 +6,7 @@ namespace Supermarket.API.Domain.Services.Communications
         public bool Success { get; protected set; }
         public string Message { get; protected set; }
         public T Resource { get; set; }
+
         public BaseResponse(T resource)
         {
             Resource = resource;
