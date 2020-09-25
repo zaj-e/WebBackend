@@ -23,17 +23,19 @@ namespace Supermarket.API.Persistence.Repositories
 
         public async Task AssignProductTag(int productId, int tagId)
         {
-            ProductTag productTag = await FindByProductIdAndTagId(productId, tagId);
-            if (productTag == null)
-            {
-                productTag = new ProductTag { ProductId = productId, TagId = tagId };
+            ProductTag productTag = await _context.ProductTags.FindAsync(productId, tagId);
+            if (productTag != null)
                 await AddAsync(productTag);
-            }
         }
 
         public async Task<ProductTag> FindByProductIdAndTagId(int productId, int tagId)
         {
-            return await _context.ProductTags.FindAsync(productId, tagId);
+            return await _context.ProductTags
+                .Where(pt => pt.ProductId == productId)
+                .Where(pt => pt.TagId == tagId)
+                .Include(pt => pt.Product)
+                .Include(pt => pt.Tag)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<ProductTag>> ListAsync()
@@ -69,7 +71,7 @@ namespace Supermarket.API.Persistence.Repositories
 
         public async void UnassignProductTag(int productId, int tagId)
         {
-            ProductTag productTag = await FindByProductIdAndTagId(productId, tagId);
+            ProductTag productTag = await _context.ProductTags.FindAsync(productId, tagId);
             if (productTag != null)
             {
                 Remove(productTag);

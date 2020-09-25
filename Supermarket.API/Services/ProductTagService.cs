@@ -25,35 +25,45 @@ namespace Supermarket.API.Services
             {
                 await _productTagRepository.AssignProductTag(productId, tagId);
                 await _unitOfWork.CompleteAsync();
-                ProductTag productTag = await _productTagRepository.FindByProductIdAndTagId(productId, tagId);
-                return new ProductTagResponse(productTag);
             }
             catch (Exception ex)
             {
                 return new ProductTagResponse($"An error ocurred while assigning Product and Tag: {ex.Message}");
             }
-            
+
+            return new ProductTagResponse(await _productTagRepository.FindByProductIdAndTagId(productId, tagId));
 
         }
 
-        public Task<IEnumerable<ProductTag>> ListAsync()
+        public async Task<IEnumerable<ProductTag>> ListAsync()
         {
-            throw new NotImplementedException();
+            return await _productTagRepository.ListAsync();
         }
 
-        public Task<IEnumerable<ProductTag>> ListByProductIdAsync(int productId)
+        public async Task<IEnumerable<ProductTag>> ListByProductIdAsync(int productId)
         {
-            throw new NotImplementedException();
+            return await _productTagRepository.ListByProductIdAsync(productId);
         }
 
-        public Task<IEnumerable<ProductTag>> ListByTagIdAsync(int tagId)
+        public async Task<IEnumerable<ProductTag>> ListByTagIdAsync(int tagId)
         {
-            throw new NotImplementedException();
+            return await _productTagRepository.ListByTagIdAsync(tagId);
         }
 
-        public Task<ProductTagResponse> UnassignProductTagAsync(int productId, int tagId)
+        public async Task<ProductTagResponse> UnassignProductTagAsync(int productId, int tagId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ProductTag productTag = await _productTagRepository.FindByProductIdAndTagId(productId, tagId);
+                _productTagRepository.Remove(productTag);
+                await _unitOfWork.CompleteAsync();
+                return new ProductTagResponse(productTag);
+            }
+            catch (Exception ex)
+            {
+                return new ProductTagResponse($"An error ocurred while assigning Tag to Product: {ex.Message}");
+            }
+
         }
     }
 }

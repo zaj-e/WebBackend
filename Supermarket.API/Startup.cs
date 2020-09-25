@@ -1,20 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Supermarket.API.Domain.Persistence.Contexts;
 using Supermarket.API.Domain.Repositories;
 using Supermarket.API.Domain.Services;
+using Supermarket.API.Extensions;
 using Supermarket.API.Persistence.Repositories;
 using Supermarket.API.Services;
 
@@ -36,13 +30,33 @@ namespace Supermarket.API
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("supermarket-api-in-memory");
+                // options.UseInMemoryDatabase("supermarket-api-in-memory");
+                //options.UseMySQL(Configuration.GetConnectionString("MySQLConnection"));
+                options.UseNpgsql("server=localhost;port=5432;database=suparmarket;uid=postgres;password=postgres");
+
             });
 
+            // Repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductTagRepository, ProductTagRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+
+            services.AddRouting(options => options.LowercaseUrls = true);
+
+            // Unit Of Work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Services
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductTagService, ProductTagService>();
+            services.AddScoped<ITagService, TagService>();
+            
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddCustomSwagger();
         }
 
 
@@ -64,6 +78,8 @@ namespace Supermarket.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCustomSwagger();
         }
     }
 }

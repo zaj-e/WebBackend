@@ -48,7 +48,13 @@ namespace Supermarket.API.Domain.Persistence.Contexts
                 .IsRequired();
             builder.Entity<Product>().Property(p => p.UnitOfMeasurement)
                 .IsRequired();
-
+            builder.Entity<Product>().HasData
+                (
+                new Product
+                { Id = 100, Name = "Apple", QuantityInPackage = 1, UnitOfMeasurement = EUnitOfMeasurement.Unity, CategoryId = 100},
+                new Product
+                { Id = 101, Name = "Milk", QuantityInPackage = 2, UnitOfMeasurement = EUnitOfMeasurement.Liter, CategoryId = 101}
+                );
 
             // Tag Entity
             builder.Entity<Tag>().ToTable("Tags");
